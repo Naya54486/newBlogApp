@@ -5,12 +5,12 @@
 <!--Use this title to change the content of each page based on the route-->
 <!--All content should be placed here for now-->
 <!--Tomorrow we are going to implement a cleaner dynamic content pages-->
- 
+
 <!--This is an example of what you are expected to do here-->
 
 <!--POST VIEW STARTS HERE -->
 <% if (title == 'Create Post') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="" method="post">
               Post Title:<br>
@@ -18,15 +18,33 @@
               <br>
               Post Body:<br>
               <input type="text" name="post_body" value="Post Body">
-              <br><br>
-              <input type="submit" value="Submit">
+              <br>
+              Author:<br>
+              <select name = "author_id">
+                <% authors.forEach(function(author) { %>
+                <option value="<%= author.id %>"><%= author.first_name %></option>
+              <br/>
+              <% }); %>
+              </select>
+            <br><br>
+              Category:<br>
+                <div>
+                    <% categories.forEach(function(category) { %>
+                        <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                    <label for="<%= category.name %>"><%= category.name %></label>                 
+                <br/>
+                <% }); %>
+                </div>
+               <br><br>
+
+              <input type="submit" value="Create Post" onClick="checkCat()">
             </form>
         </div>
     </div>
 <% } else if (title == 'Delete Post') { %>
-     
+
 <% } else if (title == 'Update Post') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="/blog/post/<%= post.id %>/update" method="post">
               Post Title:<br>
@@ -40,7 +58,7 @@
         </div>
     </div>
 <% } else if (title == 'Post Details') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
              <h1>Details of a Single post</h1>
              <p>I am a post for this ID = <%= post.id %></p>
@@ -50,7 +68,7 @@
         </div>
     </div>
 <% } else if (title == 'Post List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
         <ol>
         <% posts.forEach(function(post) { %>
@@ -65,19 +83,38 @@
     </div>
     </div>
 <% } else { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <h1><%= title %></h1>
             <p>The main content of the page goes here</p>
         </div>
     </div>
 <% } %>
+
+
+<script>
+    function checkCat() {
+    var checkBoxes = document.getElementsByClassName( 'categoryCheckbox' );
+    var isChecked = false;
+    for (var i = 0; i < checkBoxes.length; i++) {
+        if ( checkBoxes[i].checked ) {
+            isChecked = true;
+        };
+    };
+    if ( isChecked ) {
+        
+        } else {
+            alert( 'Please, check at least one checkbox!' );
+        }   
+}
+</script>
+
 <!--POST VIEW END HERE-->
 
 <!--AUTHOR VIEW STARTS HERE -->
 <!--complete logic for author view-->
 <% if (title == 'Create Author') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="" method="post">
               First Name:<br>
@@ -99,11 +136,11 @@
             </form>
         </div>
     </div>
- 
+
 <% } else if (title == 'Delete Author') { %>
-     
+
 <% } else if (title == 'Update Author') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="" method="post">
               First Name:<br>
@@ -125,9 +162,9 @@
             </form>
         </div>
     </div>
-   
+
 <% } else if (title == 'Author Details') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
              <h1>Details of a Single author</h1>
              <p>I am an author with this ID = <%= author.id %></p>
@@ -136,9 +173,9 @@
              <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
         </div>
     </div>
- 
+
 <% } else if (title == 'Author List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
             <ol>
             <% authors.forEach(function(author) { %>
@@ -161,7 +198,7 @@
 
 <!-- USER VIEW STARTS HERE -->
 <% if (title == 'Create User') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="" method="post">
               First Name:<br>
@@ -183,13 +220,13 @@
             </form>
         </div>
     </div>
- 
+
 <% } else if (title == 'Delete User') { %>
-     
+
 <% } else if (title == 'Update User') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
-            
+
             <form action="" method="post">
               First Name:<br>
               <input type="text" name="first_name" value=<%= user.first_name %> >
@@ -210,9 +247,9 @@
             </form>
         </div>
     </div>
-   
+
 <% } else if (title == 'User Details') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
              <h1>Details of a Single user</h1>
              <p>I am a user with this ID = <%= user.id %></p>
@@ -221,9 +258,9 @@
              <a href="/blog/user/<%= user.id %>/update">Edit  User</a> | <a href="/blog/user/<%= user.id %>/delete">Delete User</a>
         </div>
     </div>
- 
+
 <% } else if (title == 'User List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
             <ol>
             <% users.forEach(function(user) { %>
@@ -241,7 +278,7 @@
             </ol>
         </div>
     </div>
-  
+
 <% }  %>
 
 <!-- USER VIEW ENDS HERE -->
@@ -250,23 +287,25 @@
 <!--complete logic for category view-->
 
 <% if (title == 'Create Comment') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="" method="post">
               Title:<br>
               <input type="text" name="title" placeholder="title">
               <br><br>
+              Post:<br>
+              <input type="text" name="post_id" value="1">
               <input type="submit" value="Submit">
             </form>
         </div>
     </div>
- 
+
 <% } else if (title == 'Delete Comment') { %>
-     
+
 <% } else if (title == 'Update Comment') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
-            
+
             <form action="" method="post">
               Title:<br>
               <input type="text" name="title" value=<%= comment.title %> >
@@ -276,9 +315,9 @@
             </form>
         </div>
     </div>
-   
+
 <% } else if (title == 'Comment Details') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
              <h1>Details of a Comment</h1>
              <p>Welcome to comment <%= comment.id %></p>
@@ -286,9 +325,9 @@
              <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
         </div>
     </div>
- 
+
 <% } else if (title == 'Comment List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
             <ol>
             <% comments.forEach(function(comment) { %>
@@ -302,7 +341,7 @@
             </ol>
         </div>
     </div>
-  
+
 <% }  %>
 
 <!--COMMENT VIEW END HERE-->
@@ -312,7 +351,7 @@
 
 <!-- CATEGORY VIEW STARTS HERE -->
 <% if (title == 'Create Category') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
             <form action="" method="post">
               Name:<br>
@@ -322,13 +361,13 @@
             </form>
         </div>
     </div>
- 
+
 <% } else if (title == 'Delete Category') { %>
-     
+
 <% } else if (title == 'Update Category') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="jumbotron">
-            
+
             <form action="" method="post">
               Name:<br>
               <input type="text" name="name" value=<%= category.name %> >
@@ -338,9 +377,9 @@
             </form>
         </div>
     </div>
-   
+
 <% } else if (title == 'Category Details') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
              <h1>Details of a Single category</h1>
              <p>Welcome to category <%= category.id %></p>
@@ -348,9 +387,9 @@
              <a href="/blog/category/<%= category.id %>/update">Edit  Category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete Category</a>
         </div>
     </div>
- 
+
 <% } else if (title == 'Category List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-8">
         <div class="">
             <ol>
             <% categories.forEach(function(category) { %>
@@ -364,7 +403,7 @@
             </ol>
         </div>
     </div>
-  
+
 <% }  %>
 
 
@@ -374,5 +413,3 @@
 <!--do this for all the routes-->
 <!--This is how you will dynamically change the content on the main page-->
 <!--we already know that left and right side bar are mostly constant-->
-
-

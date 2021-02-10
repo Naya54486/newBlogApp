@@ -12,16 +12,17 @@ exports.comment_create_get = function(req, res, next) {
 };
 
 // Handle comment create on POST.
-exports.comment_create_post = function(req, res, next) {
+exports.comment_create_post = async function(req, res, next) {
      // create comment POST controller logic here
-        models.Comment.create({
-                title: req.body.title,
-            }).then(function() {
-                console.log("Comment created successfully");
+    const comment = await models.Comment.create({
+        title: req.body.title,
+        PostId: req.body.post_id,
+        }
+    );
+    console.log("Comment created successfully");
      // If a comment gets created successfully, we just redirect to comments list
      // no need to render a page
-                res.redirect("/blog/comments");
-        });
+    res.redirect("/blog/comments");
         
 };
 
@@ -122,5 +123,3 @@ exports.comment_detail = function(req, res, next) {
         
         
 };
-
- 

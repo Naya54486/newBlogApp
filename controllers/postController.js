@@ -2,26 +2,51 @@ var Post = require('../models/post');
 var models = require('../models');
 
 // Display post create form on GET.
-exports.post_create_get = function(req, res, next) {
+exports.post_create_get = async function(req, res, next) {
         // renders a post form
-        res.render('forms/post_form', { title: 'Create Post', layout: 'layouts/detail'});
+        const authors = await models.Author.findAll();
+        const categories = await models.Category.findAll();
+
+        res.render('forms/post_form', { title: 'Create Post', authors: authors, categories: categories, layout: 'layouts/detail'});
         console.log("Post form renders successfully");
 };
 
 // Handle post create on POST.
-exports.post_create_post = function(req, res, next) {
-
+exports.post_create_post = async function(req, res, next) {
      // create a new post based on the fields in our post model
      // I have create two fields, but it can be more for your model
-      models.Post.create({
-            post_title: req.body.post_title,
-            post_body: req.body.post_body
-        }).then(function() {
-            console.log("Post created successfully");
-           // check if there was an error during post creation
-            res.redirect('/blog/posts');
-      });
-};
+      const post = await models.Post.create({
+          post_title: req.body.post_title,
+          post_body: req.body.post_body,
+          AuthorId: req.body.author_id,
+        }
+      );
+
+      console.log("The post id " + post.id);
+
+      let categoryList = req.body.categories;
+
+      console.log(categoryList.length);
+
+      if (categoryList.length == 1) {
+        const category = await models.Category.findById(req.body.categories);
+        if (!category) {
+          return res.status(400);
+        };
+        await post.addCategory(category);
+      }
+
+      else {
+        await req.body.categories.forEach(async (id) => {
+          const category = await models.Category.findById(id);
+          if (!category) {
+            return res.status(400);
+          }
+          await post.addCategory(category);
+        });
+      }
+      res.redirect('/blog/posts');
+  };
 
 // Display post delete form on GET.
 exports.post_delete_get = function(req, res, next) {
@@ -141,6 +166,3 @@ exports.index = function(req, res) {
     
     
     };
-
-
- 

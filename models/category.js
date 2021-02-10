@@ -4,6 +4,15 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   });
 
+  Category.associate = function (models) {
+    models.Category.belongsToMany(models.Post, {
+      as: "posts",
+      through: "PostCategories",
+      foreignKey: "category_id",
+    });
+    
+  };
+
   return Category;
 };
 

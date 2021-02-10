@@ -3,7 +3,7 @@ var models = require('../models');
 
 // Display author create form on GET.
 exports.author_create_get = function(req, res, next) {
-        // create author GET controller logic here 
+        // create author GET controller logic here
         res.render('forms/author_form', { title: 'Create Author',  layout: 'layouts/detail'});
         console.log("User form renders successfully");
 };
@@ -71,7 +71,7 @@ exports.author_update_get = function(req, res, next) {
                res.render('forms/author_form', { title: 'Update Author', author: author, layout: 'layouts/detail'});
                console.log("Authors update get successful");
           });
-        
+
 };
 
 // Handle post update on POST.
@@ -87,16 +87,16 @@ exports.author_update_post = function(req, res, next) {
                 role: req.body.role
             },
           { // Clause
-                where: 
+                where:
                 {
                     id: req.params.author_id
                 }
             }
-        //   returning: true, where: {id: req.params.post_id} 
-         ).then(function() { 
+        //   returning: true, where: {id: req.params.post_id}
+         ).then(function() {
                 // If an post gets updated successfully, we just redirect to posts list
                 // no need to render a page
-                res.redirect("/blog/authors");  
+                res.redirect("/blog/authors");
                 console.log("Authors updated successfully");
           });
 };
@@ -111,7 +111,7 @@ exports.author_list = function(req, res, next) {
         res.render('pages/author_list', { title: 'Author List', authors: authors, layout: 'layouts/list'} );
         console.log("User list renders successfully");
         });
-        
+
 };
 
 // Display detail page for a specific author.
@@ -126,27 +126,27 @@ exports.author_detail = function(req, res, next) {
         console.log("Authors deteials renders successfully");
         });
 };
- 
+
  // This is the blog homepage.
 exports.index = function(req, res) {
 
       // find the count of posts in database
       models.User.findAndCountAll(
       ).then(function(userCount) {
-          
-       
+
+
         // find the count of authors in database
- 
+
         // find the count of comments in database
- 
+
         // find the count of categories in database
- 
+
         res.render('pages/index', {title: 'Homepage', userCount: userCount, layout: 'layouts/main'});
-        
+
         // res.render('pages/index_list_sample', { title: 'Post Details', layout: 'layouts/list'});
         // res.render('pages/index_detail_sample', { page: 'Home' , title: 'Post Details', layout: 'layouts/detail'});
 
       });
-    
-    
+
+
     };
