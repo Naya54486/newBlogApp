@@ -2,6 +2,9 @@
   "name": "starter-kit",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "12.13.0"
+  },
   "scripts": {
     "start": "DEBUG=express-sequelize node ./bin/www",
     "start-dev": "cross-env DEBUG=express-sequelize nodemon ./bin/www",
