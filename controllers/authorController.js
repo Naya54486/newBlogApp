@@ -115,38 +115,24 @@ exports.author_list = function(req, res, next) {
 };
 
 // Display detail page for a specific author.
-exports.author_detail = function(req, res, next) {
+exports.author_detail = async function(req, res, next) {
+        
+        const categories = await models.Category.findAll();
         // find a authorr by the primary key Pk
         models.Author.findById(
-                req.params.author_id
+                req.params.author_id, {
+                        include: [
+                                {
+                                        model: models.Post
+                                }
+                        ]
+                }
         ).then(function(author) {
+        console.log(author);
         // renders an inividual author details page
         console.log("Database return author " + author.username);
-        res.render('pages/author_detail', { title: 'Author Details', author: author, layout: 'layouts/detail'} );
+        res.render('pages/author_detail', { title: 'Author Details', categories: categories, author: author, layout: 'layouts/detail'} );
         console.log("Authors deteials renders successfully");
         });
 };
 
- // This is the blog homepage.
-exports.index = function(req, res) {
-
-      // find the count of posts in database
-      models.User.findAndCountAll(
-      ).then(function(userCount) {
-
-
-        // find the count of authors in database
-
-        // find the count of comments in database
-
-        // find the count of categories in database
-
-        res.render('pages/index', {title: 'Homepage', userCount: userCount, layout: 'layouts/main'});
-
-        // res.render('pages/index_list_sample', { title: 'Post Details', layout: 'layouts/list'});
-        // res.render('pages/index_detail_sample', { page: 'Home' , title: 'Post Details', layout: 'layouts/detail'});
-
-      });
-
-
-    };

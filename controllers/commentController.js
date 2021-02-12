@@ -14,16 +14,15 @@ exports.comment_create_get = function(req, res, next) {
 // Handle comment create on POST.
 exports.comment_create_post = async function(req, res, next) {
      // create comment POST controller logic here
-    const comment = await models.Comment.create({
-        title: req.body.title,
-        PostId: req.body.post_id,
-        }
-    );
-    console.log("Comment created successfully");
-     // If a comment gets created successfully, we just redirect to comments list
-     // no need to render a page
-    res.redirect("/blog/comments");
-        
+     let post_id = req.body.post_id
+     models.Comment.create({
+            title: req.body.comment_title,
+            PostId: req.body.post_id
+        }).then(function() {
+            console.log("Comment created successfully");
+           // check if there was an error during post creation
+            res.redirect('/blog/post/' + post_id);
+      });
 };
 
 // Display comment delete form on GET.
